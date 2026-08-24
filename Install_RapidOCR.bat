@@ -418,11 +418,12 @@ setlocal DisableDelayedExpansion
 >>"%APP_FILE%" echo   try{
 >>"%APP_FILE%" echo     const r=await fetch('/ocr',{method:'POST',body:fd});
 >>"%APP_FILE%" echo     const d=await r.json();
->>"%APP_FILE%" echo     if(d.error){$('out').innerHTML='^<div class=^"empty^"^>'+esc(d.error)+'^</div^>';draw([]);return;}
+>>"%APP_FILE%" echo     if(d.error){$('out').innerHTML='^<div class=^"empty^"^>'+esc(d.error)+'^</div^>';$('text').value='';draw([]);return;}
 >>"%APP_FILE%" echo     draw(d.result.map(x=^>x[0]));
 >>"%APP_FILE%" echo     const rows=d.result.map(x=^>'^<tr^>^<td^>'+esc(x[1])+'^</td^>^<td class=^"score^"^>'+x[2].toFixed(3)+'^</td^>^</tr^>').join('');
 >>"%APP_FILE%" echo     $('out').innerHTML='^<table^>^<thead^>^<tr^>^<th^>^&#x6587;^&#x672c;^</th^>^<th^>^&#x7f6e;^&#x4fe1;^&#x5ea6;^</th^>^</tr^>^</thead^>^<tbody^>'+rows+'^</tbody^>^</table^>';
->>"%APP_FILE%" echo   }catch(e){$('out').innerHTML='^<div class=^"empty^"^>^&#x8bf7;^&#x6c42;^&#x5931;^&#x8d25;: '+esc(e.message)+'^</div^>';}
+>>"%APP_FILE%" echo     $('text').value=d.result.map(x=^>x[1]).join(String.fromCharCode(10));
+>>"%APP_FILE%" echo   }catch(e){$('out').innerHTML='^<div class=^"empty^"^>^&#x8bf7;^&#x6c42;^&#x5931;^&#x8d25;: '+esc(e.message)+'^</div^>';$('text').value='';}
 >>"%APP_FILE%" echo   finally{$('run').disabled=false;$('run').textContent='\u5f00\u59cb\u8bc6\u522b';}
 >>"%APP_FILE%" echo };
 >>"%APP_FILE%" echo ^</script^>

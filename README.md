@@ -19,14 +19,14 @@
 ```bash
 # 激活虚拟环境后启动服务
 venv/Scripts/activate
-uvicorn app:app --host 0.0.0.0 --port 8000
+uvicorn app:app --host 0.0.0.0 --port 5000
 ```
 
 ### 方式二：一键安装脚本
 
 1. 双击运行 `Install_RapidOCR.bat`
 2. 等待脚本完成依赖安装与模型下载（若本地已有 venv/models 会跳过）
-3. 脚本启动服务后，浏览器访问 `http://localhost:8000`
+3. 脚本启动服务后，浏览器访问 `http://localhost:5000`
 4. 拖拽或点击上传图片，点击「开始识别」即可获取识别结果
 
 ## 项目结构
@@ -48,7 +48,7 @@ Install-RapidOCR-Windows/
 请求示例：
 
 ```bash
-curl -X POST http://localhost:8000/api/ocr -F "file=@test.png"
+curl -X POST http://localhost:5000/api/ocr -F "file=@test.png"
 ```
 
 ## 依赖

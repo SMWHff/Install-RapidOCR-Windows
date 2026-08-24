@@ -1,20 +1,20 @@
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
 
-:: ==================== ³õÊ¼»¯ ====================
-title Ò»¼ü²¿Êð RapidOCR Web ·þÎñ
+:: ==================== ï¿½ï¿½Ê¼ï¿½ï¿½ ====================
+title Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ RapidOCR Web ï¿½ï¿½ï¿½ï¿½
 echo ============================================
-echo   Ò»¼ü²¿Êð RapidOCR Web ·þÎñ½Å±¾
-echo   ¼æÈÝ Windows 7 / 10 / 11
-echo   Ä£ÐÍÔ´£ºHuggingFace + ¹úÄÚ¾µÏñ£¨×Ô¶¯ÈÝ´í£©
+echo   Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ RapidOCR Web ï¿½ï¿½ï¿½ï¿½Å±ï¿½
+echo   ï¿½ï¿½ï¿½ï¿½ Windows 7 / 10 / 11
+echo   Ä£ï¿½ï¿½Ô´ï¿½ï¿½HuggingFace + ï¿½ï¿½ï¿½Ú¾ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½Ý´ï¿½ï¿½ï¿½
 echo ============================================
 echo.
 
-:: ¹úÄÚ¼ÓËÙÔ´£¨Python¡¢pip£©
+:: ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½Ô´ï¿½ï¿½Pythonï¿½ï¿½pipï¿½ï¿½
 set "PYTHON_MIRROR=https://mirrors.huaweicloud.com/python"
 set "PIP_INDEX=https://pypi.tuna.tsinghua.edu.cn/simple"
 
-:: Ä£ÐÍÏÂÔØÔ´£¨Ö÷ + ¾µÏñ + ±¸ÓÃ£©
+:: Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ + ï¿½ï¿½ï¿½ï¿½ + ï¿½ï¿½ï¿½Ã£ï¿½
 set "MODEL_BASE_URL=https://hf-mirror.com/SWHL/RapidOCR/resolve/main/PP-OCRv3"
 set "MODEL_MIRROR_URL=https://huggingface.co/SWHL/RapidOCR/resolve/main/PP-OCRv3"
 set "MODEL_BACKUP_URL=https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/main/onnx/PP-OCRv3"
@@ -22,23 +22,23 @@ set "MIN_MODEL_BYTES=100000"
 set "MODEL_CLS_BASE_URL=https://hf-mirror.com/SWHL/RapidOCR/resolve/main/PP-OCRv1"
 set "MODEL_CLS_MIRROR_URL=https://huggingface.co/SWHL/RapidOCR/resolve/main/PP-OCRv1"
 
-:: ÏîÄ¿Ä¿Â¼
+:: ï¿½ï¿½Ä¿Ä¿Â¼
 set "BASE_DIR=%~dp0"
 set "VENV_DIR=%BASE_DIR%venv"
 set "MODEL_DIR=%BASE_DIR%models"
 set "APP_FILE=%BASE_DIR%app.py"
 
-:: Ä£ÐÍÎÄ¼þÇåµ¥£¨±ê×¢ÊÇ·ñ±ØÐè£©
+:: Ä£ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½åµ¥ï¿½ï¿½ï¿½ï¿½×¢ï¿½Ç·ï¿½ï¿½ï¿½è£©
 set "REQUIRED_MODELS=ch_PP-OCRv3_det_infer.onnx ch_PP-OCRv3_rec_infer.onnx"
 set "OPTIONAL_MODELS=ch_ppocr_mobile_v2.0_cls_infer.onnx"
 set "ALL_MODELS=%REQUIRED_MODELS% %OPTIONAL_MODELS%"
 
-:: ==================== ÆôÓÃ TLS 1.2£¨¼æÈÝ Win7£© ====================
-echo [INFO] ÆôÓÃ TLS 1.2 Ö§³Ö...
+:: ==================== ï¿½ï¿½ï¿½ï¿½ TLS 1.2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Win7ï¿½ï¿½ ====================
+echo [INFO] ï¿½ï¿½ï¿½ï¿½ TLS 1.2 Ö§ï¿½ï¿½...
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client" /v DisabledByDefault /t REG_DWORD /d 0 /f >nul 2>&1
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client" /v Enabled /t REG_DWORD /d 1 /f >nul 2>&1
 
-:: ==================== ¼ì²â Python ====================
+:: ==================== ï¿½ï¿½ï¿½ Python ====================
 set "PYTHON_CMD="
 
 where py >nul 2>&1
@@ -46,7 +46,7 @@ if not errorlevel 1 (
     py -3.8 -c "import sys; sys.exit(0 if sys.version_info >= (3,8) else 1)" >nul 2>&1
     if not errorlevel 1 (
         for /f "delims=" %%i in ('py -3.8 -c "import sys; print(sys.executable)"') do set "PYTHON_CMD=%%i"
-        echo [INFO] ÕÒµ½ Python 3.8+ ^(py launcher^): !PYTHON_CMD!
+        echo [INFO] ï¿½Òµï¿½ Python 3.8+ ^(py launcher^): !PYTHON_CMD!
     )
 )
 
@@ -56,34 +56,34 @@ if not defined PYTHON_CMD (
         python -c "import sys; sys.exit(0 if sys.version_info >= (3,8) else 1)" >nul 2>&1
         if not errorlevel 1 (
             for /f "delims=" %%i in ('python -c "import sys; print(sys.executable)"') do set "PYTHON_CMD=%%i"
-            echo [INFO] ÕÒµ½ Python ^(>=3.8^): !PYTHON_CMD!
+            echo [INFO] ï¿½Òµï¿½ Python ^(>=3.8^): !PYTHON_CMD!
         )
     )
 )
 
 if not defined PYTHON_CMD (
-    echo [INFO] Î´ÕÒµ½ºÏÊÊ Python£¬¿ªÊ¼°²×° Python 3.8.10 ...
+    echo [INFO] Î´ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½ Pythonï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½×° Python 3.8.10 ...
     call :install_python
     if errorlevel 1 (
-        echo [ERROR] Python °²×°Ê§°Ü£¡
+        echo [ERROR] Python ï¿½ï¿½×°Ê§ï¿½Ü£ï¿½
         pause
         exit /b 1
     )
 )
 
-echo [INFO] Ê¹ÓÃ Python: "%PYTHON_CMD%"
+echo [INFO] Ê¹ï¿½ï¿½ Python: "%PYTHON_CMD%"
 
-:: ==================== ´´½¨ÐéÄâ»·¾³ ====================
+:: ==================== ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â»·ï¿½ï¿½ ====================
 set "VENV_PYTHON=%VENV_DIR%\Scripts\python.exe"
 if exist "%VENV_PYTHON%" (
-    echo [INFO] ¼ì²âµ½ÒÑ´æÔÚµÄÐéÄâ»·¾³£¬Ìø¹ý´´½¨¡£
+    echo [INFO] ï¿½ï¿½âµ½ï¿½Ñ´ï¿½ï¿½Úµï¿½ï¿½ï¿½ï¿½â»·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ) else (
     set "USE_UV=0"
     "%PYTHON_CMD%" -m uv --version >nul 2>&1
     if not errorlevel 1 (
         set "USE_UV=1"
     ) else (
-        echo [INFO] ³¢ÊÔÍ¨¹ý pip °²×° uv ...
+        echo [INFO] ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ pip ï¿½ï¿½×° uv ...
         "%PYTHON_CMD%" -m pip install --index-url "%PIP_INDEX%" uv >nul 2>&1
         if not errorlevel 1 (
             "%PYTHON_CMD%" -m uv --version >nul 2>&1
@@ -92,25 +92,25 @@ if exist "%VENV_PYTHON%" (
     )
 
     if "!USE_UV!"=="1" (
-        echo [INFO] Ê¹ÓÃ uv ´´½¨ÐéÄâ»·¾³ ...
+        echo [INFO] Ê¹ï¿½ï¿½ uv ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â»·ï¿½ï¿½ ...
         "%PYTHON_CMD%" -m uv venv --python "%PYTHON_CMD%" "%VENV_DIR%"
         if errorlevel 1 (
-            echo [WARN] uv ´´½¨ÐéÄâ»·¾³Ê§°Ü£¬»ØÍËµ½ venv¡£
+            echo [WARN] uv ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â»·ï¿½ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½Ëµï¿½ venvï¿½ï¿½
             set "USE_UV=0"
         ) else (
-            echo [INFO] È·±£ÐéÄâ»·¾³°üº¬ pip ...
+            echo [INFO] È·ï¿½ï¿½ï¿½ï¿½ï¿½â»·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ pip ...
             "%VENV_PYTHON%" -m ensurepip --upgrade >nul 2>&1
             if errorlevel 1 (
-                echo [WARN] ensurepip Ê§°Ü£¬³¢ÊÔÊ¹ÓÃ uv °²×° pip...
+                echo [WARN] ensurepip Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ uv ï¿½ï¿½×° pip...
                 "%PYTHON_CMD%" -m uv pip install --python "%VENV_PYTHON%" pip >nul 2>&1
             )
         )
     )
     if "!USE_UV!"=="0" (
-        echo [INFO] Ê¹ÓÃ venv ´´½¨ÐéÄâ»·¾³ ...
+        echo [INFO] Ê¹ï¿½ï¿½ venv ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â»·ï¿½ï¿½ ...
         "%PYTHON_CMD%" -m venv "%VENV_DIR%"
         if errorlevel 1 (
-            echo [ERROR] venv ´´½¨ÐéÄâ»·¾³Ê§°Ü£¡
+            echo [ERROR] venv ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â»·ï¿½ï¿½Ê§ï¿½Ü£ï¿½
             pause
             exit /b 1
         )
@@ -118,23 +118,23 @@ if exist "%VENV_PYTHON%" (
 )
 
 if not exist "%VENV_PYTHON%" (
-    echo [ERROR] ÐéÄâ»·¾³ Python ²»´æÔÚ: "%VENV_PYTHON%"
+    echo [ERROR] ï¿½ï¿½ï¿½â»·ï¿½ï¿½ Python ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: "%VENV_PYTHON%"
     pause
     exit /b 1
 )
 
 "%VENV_PYTHON%" -m pip --version >nul 2>&1
 if errorlevel 1 (
-    echo [ERROR] ÐéÄâ»·¾³È±ÉÙ pip£¬ÇëÊÖ¶¯É¾³ý venv ÎÄ¼þ¼ÐºóÖØÐÂÔËÐÐ½Å±¾¡£
+    echo [ERROR] ï¿½ï¿½ï¿½â»·ï¿½ï¿½È±ï¿½ï¿½ pipï¿½ï¿½ï¿½ï¿½ï¿½Ö¶ï¿½É¾ï¿½ï¿½ venv ï¿½Ä¼ï¿½ï¿½Ðºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð½Å±ï¿½ï¿½ï¿½
     pause
     exit /b 1
 )
 
-:: ==================== °²×°ÒÀÀµ ====================
-echo [INFO] Éý¼¶ pip ...
+:: ==================== ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½ ====================
+echo [INFO] ï¿½ï¿½ï¿½ï¿½ pip ...
 "%VENV_PYTHON%" -m pip install --upgrade pip --index-url "%PIP_INDEX%" >nul 2>&1
 
-echo [INFO] °²×°»ù´¡ÒÀÀµ£¨¼æÈÝ Win7/10/11£©...
+echo [INFO] ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Win7/10/11ï¿½ï¿½...
 "%VENV_PYTHON%" -m pip install --index-url "%PIP_INDEX%" ^
     fastapi==0.100.0 uvicorn==0.23.2 python-multipart==0.0.6 ^
     pydantic==1.10.13 ^
@@ -142,55 +142,55 @@ echo [INFO] °²×°»ù´¡ÒÀÀµ£¨¼æÈÝ Win7/10/11£©...
     pyyaml==6.0.1 shapely==1.8.5 pyclipper==1.3.0.post5 six==1.16.0 tqdm==4.66.1
 
 if errorlevel 1 (
-    echo [ERROR] »ù´¡ÒÀÀµ°²×°Ê§°Ü£¡
+    echo [ERROR] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×°Ê§ï¿½Ü£ï¿½
     pause
     exit /b 1
 )
 
-:: ==================== GPU ¼ì²â ====================
+:: ==================== GPU ï¿½ï¿½ï¿½ ====================
 set "GPU_AVAILABLE=0"
 set "CUDA_AVAILABLE=0"
 
 nvidia-smi >nul 2>&1
 if not errorlevel 1 (
-    echo [INFO] ¼ì²âµ½ NVIDIA GPU¡£
+    echo [INFO] ï¿½ï¿½âµ½ NVIDIA GPUï¿½ï¿½
     where nvcc >nul 2>&1
     if not errorlevel 1 (
         set "CUDA_AVAILABLE=1"
-        echo [INFO] ¼ì²âµ½ CUDA Toolkit ^(nvcc^)¡£
+        echo [INFO] ï¿½ï¿½âµ½ CUDA Toolkit ^(nvcc^)ï¿½ï¿½
     ) else (
         if defined CUDA_PATH (
             set "CUDA_AVAILABLE=1"
-            echo [INFO] ¼ì²âµ½ CUDA_PATH »·¾³±äÁ¿¡£
+            echo [INFO] ï¿½ï¿½âµ½ CUDA_PATH ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         )
     )
 )
 
 if "!CUDA_AVAILABLE!"=="1" (
     set "GPU_AVAILABLE=1"
-    echo [INFO] °²×° onnxruntime-gpu==1.10.0 ...
+    echo [INFO] ï¿½ï¿½×° onnxruntime-gpu==1.10.0 ...
     "%VENV_PYTHON%" -m pip install --index-url "%PIP_INDEX%" onnxruntime-gpu==1.10.0
 ) else (
-    echo [INFO] Î´¼ì²âµ½ÍêÕû CUDA »·¾³£¬°²×° onnxruntime==1.10.0 ^(CPU °æ^) ...
+    echo [INFO] Î´ï¿½ï¿½âµ½ï¿½ï¿½ï¿½ï¿½ CUDA ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×° onnxruntime==1.10.0 ^(CPU ï¿½ï¿½^) ...
     "%VENV_PYTHON%" -m pip install --index-url "%PIP_INDEX%" onnxruntime==1.10.0
 )
 
 if errorlevel 1 (
-    echo [ERROR] onnxruntime °²×°Ê§°Ü£¡
+    echo [ERROR] onnxruntime ï¿½ï¿½×°Ê§ï¿½Ü£ï¿½
     pause
     exit /b 1
 )
 
-echo [INFO] °²×° rapidocr_onnxruntime£¨²»×Ô¶¯°²×°ÒÀÀµ£©...
+echo [INFO] ï¿½ï¿½×° rapidocr_onnxruntimeï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½...
 "%VENV_PYTHON%" -m pip install --index-url "%PIP_INDEX%" rapidocr_onnxruntime --no-deps
 if errorlevel 1 (
-    echo [ERROR] rapidocr_onnxruntime °²×°Ê§°Ü£¡
+    echo [ERROR] rapidocr_onnxruntime ï¿½ï¿½×°Ê§ï¿½Ü£ï¿½
     pause
     exit /b 1
 )
 
-:: ==================== ÏÂÔØÄ£ÐÍ£¨ÖÇÄÜÈÝ´í£© ====================
-echo [INFO] ×¼±¸ÏÂÔØ RapidOCR Ä£ÐÍ ...
+:: ==================== ï¿½ï¿½ï¿½ï¿½Ä£ï¿½Í£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½ ====================
+echo [INFO] ×¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ RapidOCR Ä£ï¿½ï¿½ ...
 if not exist "%MODEL_DIR%" mkdir "%MODEL_DIR%"
 
 set "MISSING_REQUIRED=0"
@@ -200,50 +200,50 @@ for %%F in (%ALL_MODELS%) do (
     call :download_model "%%F"
     set "result=!errorlevel!"
     if !result! neq 0 (
-        :: ¼ì²éÊÇ·ñ±ØÐè
+        :: ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
         echo %%F | findstr /C:"ch_ppocr_mobile_v2.0_cls_infer.onnx" >nul
         if errorlevel 1 (
             set "MISSING_REQUIRED=1"
-            echo [ERROR] ±ØÐèÄ£ÐÍ %%F ÏÂÔØÊ§°Ü£¡
+            echo [ERROR] ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ %%F ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½
         ) else (
             set "MISSING_OPTIONAL=1"
-            echo [WARN] ¿ÉÑ¡Ä£ÐÍ %%F ÏÂÔØÊ§°Ü£¬½«Ìø¹ý¼ÓÔØ¡£
+            echo [WARN] ï¿½ï¿½Ñ¡Ä£ï¿½ï¿½ %%F ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¡ï¿½
         )
     )
 )
 
 if "%MISSING_REQUIRED%"=="1" (
-    echo [ERROR] ±ØÐèÄ£ÐÍÈ±Ê§£¬²¿ÊðÊ§°Ü£¡Çë¼ì²éÍøÂçºóÖØÊÔ¡£
+    echo [ERROR] ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½È±Ê§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¡ï¿½
     pause
     exit /b 1
 )
 
 if "%MISSING_OPTIONAL%"=="1" (
-    echo [WARN] ²¿·Ö¿ÉÑ¡Ä£ÐÍÈ±Ê§£¬OCR ·þÎñÈÔ¿ÉÔËÐÐ£¨·½ÏòÐ£Õý¹¦ÄÜ½«½ûÓÃ£©¡£
+    echo [WARN] ï¿½ï¿½ï¿½Ö¿ï¿½Ñ¡Ä£ï¿½ï¿½È±Ê§ï¿½ï¿½OCR ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½Ü½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½
 )
 
-echo [INFO] Ä£ÐÍ×¼±¸Íê³É¡£
+echo [INFO] Ä£ï¿½ï¿½×¼ï¿½ï¿½ï¿½ï¿½É¡ï¿½
 goto :continue
 
 :: ------------------------------------------------------------
-:: ×Ó³ÌÐò£ºÏÂÔØµ¥¸öÄ£ÐÍ£¨¶àÔ´¡¢¶à¹¤¾ß£©
+:: ï¿½Ó³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½Ä£ï¿½Í£ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½à¹¤ï¿½ß£ï¿½
 :download_model
 set "FILE_NAME=%~1"
 set "DEST=%MODEL_DIR%\%FILE_NAME%"
 
-:: ÈôÎÄ¼þÒÑ´æÔÚÇÒ·Ç¿Õ£¬Ìø¹ý
+:: ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ñ´ï¿½ï¿½ï¿½ï¿½Ò·Ç¿Õ£ï¿½ï¿½ï¿½ï¿½ï¿½
 if exist "%DEST%" (
     for %%A in ("%DEST%") do if %%~zA geq %MIN_MODEL_BYTES% (
-        echo [INFO] Ä£ÐÍÎÄ¼þ %FILE_NAME% ÒÑ´æÔÚÇÒ·Ç¿Õ£¬Ìø¹ýÏÂÔØ¡£
+        echo [INFO] Ä£ï¿½ï¿½ï¿½Ä¼ï¿½ %FILE_NAME% ï¿½Ñ´ï¿½ï¿½ï¿½ï¿½Ò·Ç¿Õ£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¡ï¿½
         exit /b 0
     ) else (
         del "%DEST%"
     )
 )
 
-echo [INFO] ÕýÔÚÏÂÔØ %FILE_NAME% ...
+echo [INFO] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ %FILE_NAME% ...
 
-:: ·ÖÀàÄ£ÐÍ(·½ÏòÐ£Õý)·ÅÓÚ PP-OCRv1 Â·¾¶£¬det/rec ·ÅÓÚ PP-OCRv3£¬°´ÎÄ¼þÃûÑ¡Ô´
+:: ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ PP-OCRv1 Â·ï¿½ï¿½ï¿½ï¿½det/rec ï¿½ï¿½ï¿½ï¿½ PP-OCRv3ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ñ¡Ô´
 set "CUR_BASE=%MODEL_CLS_BASE_URL%"
 set "CUR_MIRROR=%MODEL_CLS_MIRROR_URL%"
 echo %FILE_NAME% | findstr /C:"cls_infer" >nul
@@ -259,7 +259,7 @@ if not errorlevel 1 (
     )
 )
 
-echo [WARN] Ö÷Ô´Ê§°Ü£¬³¢ÊÔ¾µÏñÔ´...
+echo [WARN] ï¿½ï¿½Ô´Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½Ô¾ï¿½ï¿½ï¿½Ô´...
 call :try_download "%CUR_MIRROR%/%FILE_NAME%" "%DEST%"
 if not errorlevel 1 (
     if exist "%DEST%" (
@@ -267,8 +267,8 @@ if not errorlevel 1 (
     )
 )
 
-echo [WARN] ¾µÏñÔ´Ê§°Ü£¬³¢ÊÔ±¸ÓÃÔ´£¨½öÏÞ·ÖÀàÄ£ÐÍ£©...
-:: ±¸ÓÃÔ´Ö»¶Ô·ÖÀàÄ£ÐÍÓÐÐ§£¬ÇÒÂ·¾¶¿ÉÄÜ²»Í¬£¬³¢ÊÔÐÞ¸ÄÎÄ¼þÃû
+echo [WARN] ï¿½ï¿½ï¿½ï¿½Ô´Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½ï¿½ï¿½Ä£ï¿½Í£ï¿½...
+:: ï¿½ï¿½ï¿½ï¿½Ô´Ö»ï¿½Ô·ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½Ü²ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
 echo %FILE_NAME% | findstr /C:"cls_infer" >nul
 if not errorlevel 1 (
     call :try_download "%MODEL_BACKUP_URL%/%FILE_NAME%" "%DEST%"
@@ -279,12 +279,12 @@ if not errorlevel 1 (
     )
 )
 
-:: È«²¿Ê§°Ü
+:: È«ï¿½ï¿½Ê§ï¿½ï¿½
 if exist "%DEST%" del "%DEST%"
 exit /b 1
 
 :: ------------------------------------------------------------
-:: ×Ó³ÌÐò£ºÓÃ¶àÖÖ¹¤¾ß³¢ÊÔÏÂÔØ
+:: ï¿½Ó³ï¿½ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½Ö¹ï¿½ï¿½ß³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 :try_download
 set "URL=%~1"
 set "DEST=%~2"
@@ -293,7 +293,7 @@ set "PART=%DEST%.part"
 :: remove a stale partial download from a previous interrupted run
 if exist "%PART%" del "%PART%"
 
-:: curl ÓÅÏÈ£¨Á¬½Ó 30 Ãë¡¢×ÜÏÞ 30 ·ÖÖÓ¡¢Ê§°Ü×Ô¶¯ÖØÊÔ 3 ´Î£©
+:: curl ï¿½ï¿½ï¿½È£ï¿½ï¿½ï¿½ï¿½ï¿½ 30 ï¿½ë¡¢ï¿½ï¿½ï¿½ï¿½ 30 ï¿½ï¿½ï¿½Ó¡ï¿½Ê§ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ 3 ï¿½Î£ï¿½
 where curl >nul 2>&1
 if not errorlevel 1 (
     curl -L --fail --silent --show-error --connect-timeout 30 --max-time 1800 --retry 3 --retry-delay 3 "%URL%" -o "%PART%"
@@ -302,7 +302,7 @@ if not errorlevel 1 (
     )
 )
 
-:: PowerShell ¶µµ×
+:: PowerShell ï¿½ï¿½ï¿½ï¿½
 powershell -NoProfile -Command "$ProgressPreference='SilentlyContinue'; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '%URL%' -OutFile '%DEST%' -TimeoutSec 1800" >nul 2>&1
 if not errorlevel 1 (
     if exist "%DEST%" (
@@ -310,7 +310,7 @@ if not errorlevel 1 (
     )
 )
 
-:: certutil ¶µµ×
+:: certutil ï¿½ï¿½ï¿½ï¿½
 certutil -urlcache -split -f "%URL%" "%PART%" >nul 2>&1
 if not errorlevel 1 (
     for %%A in ("%PART%") do if %%~zA geq %MIN_MODEL_BYTES% ( move /y "%PART%" "%DEST%" >nul 2>&1 && exit /b 0 )
@@ -320,10 +320,10 @@ exit /b 1
 :: ------------------------------------------------------------
 :continue
 
-:: ==================== ´´½¨ Web ·þÎñ´úÂë£¨ÖÇÄÜÊÊÅäÈ±Ê§Ä£ÐÍ£© ====================
-echo [INFO] ´´½¨ Web ·þÎñ´úÂë app.py ...
+:: ==================== ï¿½ï¿½ï¿½ï¿½ Web ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È±Ê§Ä£ï¿½Í£ï¿½ ====================
+echo [INFO] ï¿½ï¿½ï¿½ï¿½ Web ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ app.py ...
 
-:: Éú³É Web ·þÎñ´úÂë£¨cls Ä£ÐÍÒÑÏÂÔØ£¬Ö±½ÓÒýÓÃÓÐÐ§Â·¾¶£©
+:: ï¿½ï¿½ï¿½ï¿½ Web ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¨cls Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø£ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§Â·ï¿½ï¿½ï¿½ï¿½
 > "%APP_FILE%" echo import os
 >>"%APP_FILE%" echo import numpy as np
 >>"%APP_FILE%" echo from fastapi import FastAPI, File, UploadFile
@@ -412,7 +412,7 @@ setlocal DisableDelayedExpansion
 >>"%APP_FILE%" echo function esc(s){return String(s).replace(/[^&^<^>^"']/g,c=^>({'^&':'^&amp;','^<':'^&lt;','^>':'^&gt;','^"':'^&quot;',^"'^":'^&#39;'}[c]))}
 >>"%APP_FILE%" echo $('run').onclick=async()=^>{
 >>"%APP_FILE%" echo   const f=$('file').files[0]; if(!f)return;
->>"%APP_FILE%" echo   $('run').disabled=true;$('run').textContent='^&#x8bc6;^&#x522b;^&#x4e2d;...';
+>>"%APP_FILE%" echo   $('run').disabled=true;$('run').textContent='\u8bc6\u522b\u4e2d...';
 >>"%APP_FILE%" echo   const fd=new FormData();fd.append('file',f);
 >>"%APP_FILE%" echo   try{
 >>"%APP_FILE%" echo     const r=await fetch('/ocr',{method:'POST',body:fd});
@@ -422,7 +422,7 @@ setlocal DisableDelayedExpansion
 >>"%APP_FILE%" echo     const rows=d.result.map(x=^>'^<tr^>^<td^>'+esc(x[1])+'^</td^>^<td class=^"score^"^>'+x[2].toFixed(3)+'^</td^>^</tr^>').join('');
 >>"%APP_FILE%" echo     $('out').innerHTML='^<table^>^<thead^>^<tr^>^<th^>^&#x6587;^&#x672c;^</th^>^<th^>^&#x7f6e;^&#x4fe1;^&#x5ea6;^</th^>^</tr^>^</thead^>^<tbody^>'+rows+'^</tbody^>^</table^>';
 >>"%APP_FILE%" echo   }catch(e){$('out').innerHTML='^<div class=^"empty^"^>^&#x8bf7;^&#x6c42;^&#x5931;^&#x8d25;: '+esc(e.message)+'^</div^>';}
->>"%APP_FILE%" echo   finally{$('run').disabled=false;$('run').textContent='^&#x5f00;^&#x59cb;^&#x8bc6;^&#x522b;';}
+>>"%APP_FILE%" echo   finally{$('run').disabled=false;$('run').textContent='\u5f00\u59cb\u8bc6\u522b';}
 >>"%APP_FILE%" echo };
 >>"%APP_FILE%" echo ^</script^>
 >>"%APP_FILE%" echo ^</body^>
@@ -473,18 +473,18 @@ endlocal
 >>"%APP_FILE%" echo     uvicorn.run(app, host=^"0.0.0.0^", port=5000, use_colors=False)
 >>"%APP_FILE%" echo.
 
-:: ==================== Æô¶¯·þÎñ ====================
-echo [INFO] ÉèÖÃ»·¾³±äÁ¿²¢Æô¶¯ Web ·þÎñ ...
+:: ==================== ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ====================
+echo [INFO] ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Web ï¿½ï¿½ï¿½ï¿½ ...
 set "GPU_AVAILABLE=%GPU_AVAILABLE%"
-echo [INFO] ·þÎñµØÖ·: http://localhost:5000
-echo [INFO] API ÎÄµµ: http://localhost:5000/docs
-echo [INFO] °´ Ctrl+C Í£Ö¹·þÎñ¡£
+echo [INFO] ï¿½ï¿½ï¿½ï¿½ï¿½Ö·: http://localhost:5000
+echo [INFO] API ï¿½Äµï¿½: http://localhost:5000/docs
+echo [INFO] ï¿½ï¿½ Ctrl+C Í£Ö¹ï¿½ï¿½ï¿½ï¿½
 "%VENV_PYTHON%" "%APP_FILE%"
 
 pause
 exit /b 0
 
-:: ==================== ×Ó³ÌÐò£º°²×° Python ====================
+:: ==================== ï¿½Ó³ï¿½ï¿½ò£º°ï¿½×° Python ====================
 :install_python
 if "%PROCESSOR_ARCHITECTURE%"=="AMD64" (
     set "PYTHON_INSTALLER_URL=%PYTHON_MIRROR%/3.8.10/python-3.8.10-amd64.exe"
@@ -493,20 +493,20 @@ if "%PROCESSOR_ARCHITECTURE%"=="AMD64" (
     set "PYTHON_INSTALLER_URL=%PYTHON_MIRROR%/3.8.10/python-3.8.10.exe"
     set "PYTHON_INSTALLER=%TEMP%\python-3.8.10.exe"
 )
-echo [INFO] ÏÂÔØ Python °²×°°ü: !PYTHON_INSTALLER_URL!
+echo [INFO] ï¿½ï¿½ï¿½ï¿½ Python ï¿½ï¿½×°ï¿½ï¿½: !PYTHON_INSTALLER_URL!
 certutil -urlcache -split -f "!PYTHON_INSTALLER_URL!" "!PYTHON_INSTALLER!" >nul 2>&1
 if errorlevel 1 (
-    echo [ERROR] Python °²×°°üÏÂÔØÊ§°Ü£¡
+    echo [ERROR] Python ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½
     exit /b 1
 )
 if not exist "!PYTHON_INSTALLER!" (
-    echo [ERROR] Python °²×°°ü²»´æÔÚ£¡
+    echo [ERROR] Python ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú£ï¿½
     exit /b 1
 )
-echo [INFO] ¾²Ä¬°²×° Python 3.8.10£¨ÓÃ»§¼¶£©...
+echo [INFO] ï¿½ï¿½Ä¬ï¿½ï¿½×° Python 3.8.10ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½...
 "!PYTHON_INSTALLER!" /quiet InstallAllUsers=0 PrependPath=1 Include_test=0
 if errorlevel 1 (
-    echo [ERROR] Python °²×°Ê§°Ü£¡
+    echo [ERROR] Python ï¿½ï¿½×°Ê§ï¿½Ü£ï¿½
     del "!PYTHON_INSTALLER!"
     exit /b 1
 )
@@ -517,8 +517,8 @@ if not exist "!PYTHON_CMD!" (
     set "PYTHON_CMD=%LOCALAPPDATA%\Programs\Python\Python38-32\python.exe"
 )
 if not exist "!PYTHON_CMD!" (
-    echo [ERROR] Î´ÕÒµ½°²×°ºóµÄ Python£¡
+    echo [ERROR] Î´ï¿½Òµï¿½ï¿½ï¿½×°ï¿½ï¿½ï¿½ Pythonï¿½ï¿½
     exit /b 1
 )
-echo [INFO] Python °²×°Íê³É: !PYTHON_CMD!
+echo [INFO] Python ï¿½ï¿½×°ï¿½ï¿½ï¿½: !PYTHON_CMD!
 exit /b 0

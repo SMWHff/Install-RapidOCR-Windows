@@ -85,7 +85,7 @@ function draw(boxes){
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 $('run').onclick=async()=>{
   const f=$('file').files[0]; if(!f)return;
-  $('run').disabled=true;$('run').textContent='&#x8bc6;&#x522b;&#x4e2d;...';
+  $('run').disabled=true;$('run').textContent='\u8bc6\u522b\u4e2d...';
   const fd=new FormData();fd.append('file',f);
   try{
     const r=await fetch('/ocr',{method:'POST',body:fd});
@@ -95,7 +95,7 @@ $('run').onclick=async()=>{
     const rows=d.result.map(x=>'<tr><td>'+esc(x[1])+'</td><td class="score">'+x[2].toFixed(3)+'</td></tr>').join('');
     $('out').innerHTML='<table><thead><tr><th>&#x6587;&#x672c;</th><th>&#x7f6e;&#x4fe1;&#x5ea6;</th></tr></thead><tbody>'+rows+'</tbody></table>';
   }catch(e){$('out').innerHTML='<div class="empty">&#x8bf7;&#x6c42;&#x5931;&#x8d25;: '+esc(e.message)+'</div>';}
-  finally{$('run').disabled=false;$('run').textContent='&#x5f00;&#x59cb;&#x8bc6;&#x522b;';}
+  finally{$('run').disabled=false;$('run').textContent='\u5f00\u59cb\u8bc6\u522b';}
 };
 </script>
 </body>

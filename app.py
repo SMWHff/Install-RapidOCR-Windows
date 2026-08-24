@@ -32,6 +32,7 @@ HTML_PAGE = """
   #canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
   button { background: var(--indigo); color: #fff; border: 0; padding: 10px 20px; border-radius: 8px; font-size: 14px; cursor: pointer; margin: 16px auto; display: block; }
   button:disabled { opacity: .6; cursor: not-allowed; }
+  textarea { display: block; width: calc(100% - 32px); margin: 0 16px 16px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font: inherit; font-size: 14px; resize: vertical; box-sizing: border-box; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   td, th { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
   th { color: var(--slate); font-weight: 600; white-space: nowrap; }
@@ -47,10 +48,11 @@ HTML_PAGE = """
     <div class="drop" id="drop">&#x70b9;&#x51fb;&#x6216;&#x62d6;&#x62fd;&#x56fe;&#x7247;&#x5230;&#x6b64;&#x5904;</div>
     <input type="file" id="file" accept="image/*" hidden>
     <button id="run" disabled>&#x5f00;&#x59cb;&#x8bc6;&#x522b;</button>
+    <textarea id="text" rows="8" placeholder="&#x8bc6;&#x522b;&#x6587;&#x672c;"></textarea>
     <div id="content"><div class="canvas-wrap"><img id="preview" style="display:none"><canvas id="canvas"></canvas></div></div>
   </div>
   <div class="card">
-    <h2>&#x6587;&#x672c;&#x5185;&#x5bb9;</h2>
+    <h2>&#x6587;&#x672c;&#x5217;&#x8868;</h2>
     <div id="out"><div class="empty">&#x5c1a;&#x672a;&#x8bc6;&#x522b;</div></div>
   </div>
 </main>

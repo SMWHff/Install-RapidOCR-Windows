@@ -21,8 +21,7 @@ HTML_PAGE = """
   body { font-family: system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif; margin: 0; background: #f8fafc; color: #0f172a; }
   header { background: #fff; border-bottom: 1px solid var(--border); padding: 16px 24px; }
   header h1 { margin: 0; font-size: 18px; color: var(--indigo); }
-  main { max-width: 1080px; margin: 24px auto; padding: 0 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  @media (max-width: 720px) { main { grid-template-columns: 1fr; } }
+  main { max-width: 1400px; margin: 24px auto; padding: 0 16px; display: grid; grid-template-columns: 1fr; gap: 24px; }
   .card { background: #fff; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
   .card h2 { margin: 0; padding: 12px 16px; font-size: 14px; background: #f1f5f9; border-bottom: 1px solid var(--border); }
   .drop { padding: 24px; text-align: center; border: 2px dashed var(--border); border-radius: 8px; margin: 16px; color: var(--slate); cursor: pointer; }

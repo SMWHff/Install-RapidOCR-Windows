@@ -1,0 +1,14 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# 模型文件（由 Install_RapidOCR.bat 自动下载）
+models/
+
+# 日志
+logs/
+
+# 系统
+.DS_Store
+Thumbs.db

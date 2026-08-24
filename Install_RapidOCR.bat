@@ -411,7 +411,7 @@ setlocal DisableDelayedExpansion
 >>"%APP_FILE%" echo   }
 >>"%APP_FILE%" echo }
 >>"%APP_FILE%" echo function esc(s){return String(s).replace(/[^&^<^>^"']/g,c=^>({'^&':'^&amp;','^<':'^&lt;','^>':'^&gt;','^"':'^&quot;',^"'^":'^&#39;'}[c]))}
->>"%APP_FILE%" echo function groupText(items){const arr=items.map(x=^>({box:x[0],text:x[1]}));let h=0;arr.forEach(b=^>{b.cy=(b.box[0][1]+b.box[2][1])/2;b.h=b.box[2][1]-b.box[0][1];h+=b.h;});h/=arr.length;arr.sort((a,b)=^>a.cy-b.cy);const lines=[];for(const b of arr){const last=lines[lines.length-1];if(last&&b.cy-last.cy<=h/2){last.push(b);last.cy=b.cy;}else{lines.push([b]);lines[lines.length-1].cy=b.cy;}}return lines.map(l=^>l.sort((a,b)=^>a.box[0][0]-b.box[0][0]).map(i=^>i.text).join(String.fromCharCode(9))).join(String.fromCharCode(10));}
+>>"%APP_FILE%" echo function groupText(items){const arr=items.map(x=^>({box:x[0],text:x[1]}));let h=0;arr.forEach(b=^>{b.cy=(b.box[0][1]+b.box[2][1])/2;b.h=b.box[2][1]-b.box[0][1];h+=b.h;});h/=arr.length;arr.sort((a,b)=^>a.cy-b.cy);const lines=[];for(const b of arr){const last=lines[lines.length-1];if(last^&^&b.cy-last.cy^<=h/2){last.push(b);last.cy=b.cy;}else{lines.push([b]);lines[lines.length-1].cy=b.cy;}}return lines.map(l=^>l.sort((a,b)=^>a.box[0][0]-b.box[0][0]).map(i=^>i.text).join(String.fromCharCode(9))).join(String.fromCharCode(10));}
 >>"%APP_FILE%" echo $('run').onclick=async()=^>{
 >>"%APP_FILE%" echo   const f=$('file').files[0]; if(!f)return;
 >>"%APP_FILE%" echo   $('run').disabled=true;$('run').textContent='\u8bc6\u522b\u4e2d...';

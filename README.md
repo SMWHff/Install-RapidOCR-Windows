@@ -2,7 +2,7 @@
 
 在 Windows 上一键部署并运行 **RapidOCR** 中文 OCR Web 服务。克隆仓库后开箱即用：无需 GPU，无需手动下载模型，即可通过浏览器拖拽图片完成文字识别。
 
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/Python-3.8-blue)](https://www.python.org/)
 [![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey)](#)
 [![OCR](https://img.shields.io/badge/OCR-RapidOCR-purple)](https://github.com/RapidAI/RapidOCR)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
@@ -23,8 +23,7 @@
 
 ## 功能特性
 
-- 🚀 **开箱即用**：完整的 Python 虚拟环境（`venv/`）与 OCR 模型（`models/`）已随仓库提供
-- 📦 **一键部署**：双击 `Install_RapidOCR.bat` 自动完成依赖安装、模型下载与服务启动
+- 📦 **一键部署**：双击 `Install_RapidOCR.bat` 自动完成 Python 检测、依赖安装、模型下载与服务启动（有 uv 用 `.venv`，否则用 venv+python）；OCR 模型（`models/`）已随仓库提供
 - 🖼️ **便捷识别**：Web 页面支持点击/拖拽上传图片，实时预览并绘制识别框
 - 📋 **结果分组**：同一行文本以 Tab 分隔、不同行换行，多行文本框可直接复制
 - 🌐 **多镜像容错**：模型自动从 hf-mirror / Hugging Face / ModelScope 多源下载
@@ -40,24 +39,10 @@
 | 图像处理 | opencv-python、Pillow、numpy |
 | 其他 | python-multipart、pydantic、pyyaml、shapely、pyclipper、tqdm |
 
-## 快速开始
-
-### 方式一：使用仓库内 venv（推荐）
-
-```bash
-# 激活虚拟环境（Git Bash / CMD 均可）
-venv/Scripts/activate
-
-# 启动服务
-uvicorn app:app --host 0.0.0.0 --port 5000
-```
-
-浏览器访问 <http://localhost:5000>。
-
-### 方式二：一键安装脚本
+## 快速开始：一键安装脚本
 
 1. 双击运行 `Install_RapidOCR.bat`
-2. 脚本自动检测 Python、创建虚拟环境、安装依赖并下载模型（已存在则跳过）
+2. 脚本自动检测 Python、创建虚拟环境（有 uv 用 `.venv`，否则用 venv+python）、安装依赖并下载模型（已存在则跳过）
 3. 服务启动后，浏览器访问 `http://localhost:5000`
 
 > 提示：脚本会检测 CUDA 环境，自动选择 `onnxruntime-gpu` 或 `onnxruntime`（CPU 版）。
@@ -67,7 +52,7 @@ uvicorn app:app --host 0.0.0.0 --port 5000
 1. 打开页面后，点击虚线框或拖拽一张图片到页面
 2. 点击 **「开始识别」** 按钮
 3. 识别完成后：
-   - 左侧图片上会绘制出文本检测框
+   - 图片上会绘制出文本检测框
    - **「文本列表」** 表格展示每个识别框的文本与置信度
    - **多行文本框** 汇总全部识别文本：同一行文本以 Tab 分隔、不同行换行，方便复制
 
@@ -91,11 +76,11 @@ curl -X POST http://localhost:5000/ocr -F "file=@test.png"
   "result": [
     [[[x, y], [x, y], [x, y], [x, y]], "识别文本", 0.991]
   ],
-  "elapse": 1.234
+  "elapse": [0.12, 0.01, 0.21]
 }
 ```
 
-其中 `result` 每个元素为 `[检测框四点坐标, 文本, 置信度]`。
+其中 `result` 每个元素为 `[检测框四点坐标, 文本, 置信度]`，`elapse` 为 `[检测耗时, 方向分类耗时, 识别耗时]`（秒）。
 
 ## 项目结构
 
@@ -103,7 +88,9 @@ curl -X POST http://localhost:5000/ocr -F "file=@test.png"
 Install-RapidOCR-Windows/
 ├── app.py                   # FastAPI 后端 + Web 前端页面
 ├── Install_RapidOCR.bat     # 一键安装与启动脚本
-├── venv/                    # Python 虚拟环境（已随仓库提供）
+├── pyproject.toml           # uv 依赖定义（开发调试用）
+├── uv.lock                  # uv 依赖锁定文件
+├── .venv/                   # 运行时虚拟环境（bat/uv 自动创建，已 gitignore）
 ├── models/                  # OCR 模型文件（已随仓库提供）
 ├── LICENSE                  # MIT 许可证
 └── README.md                # 项目说明

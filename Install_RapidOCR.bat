@@ -24,7 +24,7 @@ set "MODEL_CLS_MIRROR_URL=https://huggingface.co/SWHL/RapidOCR/resolve/main/PP-O
 
 :: 项目目录
 set "BASE_DIR=%~dp0"
-set "VENV_DIR=%BASE_DIR%venv"
+set "VENV_DIR=%BASE_DIR%.venv"
 set "MODEL_DIR=%BASE_DIR%models"
 set "APP_FILE=%BASE_DIR%app.py"
 
@@ -43,20 +43,20 @@ set "PYTHON_CMD="
 
 where py >nul 2>&1
 if not errorlevel 1 (
-    py -3.8 -c "import sys; sys.exit(0 if sys.version_info >= (3,8) else 1)" >nul 2>&1
+    py -3.8 -c "import sys; sys.exit(0 if sys.version_info[:2] == (3,8) else 1)" >nul 2>&1
     if not errorlevel 1 (
         for /f "delims=" %%i in ('py -3.8 -c "import sys; print(sys.executable)"') do set "PYTHON_CMD=%%i"
-        echo [INFO] 找到 Python 3.8+ ^(py launcher^): !PYTHON_CMD!
+        echo [INFO] 找到 Python 3.8 ^(py launcher^): !PYTHON_CMD!
     )
 )
 
 if not defined PYTHON_CMD (
     where python >nul 2>&1
     if not errorlevel 1 (
-        python -c "import sys; sys.exit(0 if sys.version_info >= (3,8) else 1)" >nul 2>&1
+        python -c "import sys; sys.exit(0 if sys.version_info[:2] == (3,8) else 1)" >nul 2>&1
         if not errorlevel 1 (
             for /f "delims=" %%i in ('python -c "import sys; print(sys.executable)"') do set "PYTHON_CMD=%%i"
-            echo [INFO] 找到 Python ^(>=3.8^): !PYTHON_CMD!
+            echo [INFO] 找到 Python 3.8 ^(python^): !PYTHON_CMD!
         )
     )
 )
@@ -75,25 +75,38 @@ echo [INFO] 使用 Python: "%PYTHON_CMD%"
 
 :: ==================== 创建虚拟环境 ====================
 set "VENV_PYTHON=%VENV_DIR%\Scripts\python.exe"
-if exist "%VENV_PYTHON%" (
-    echo [INFO] 检测到已存在的虚拟环境，跳过创建。
+:: 检测 uv（创建虚拟环境与启动服务复用；Win7 无 uv 时自动回退 venv+python）
+set "USE_UV=0"
+set "UV_CMD="
+where uv >nul 2>&1
+if not errorlevel 1 (
+    set "USE_UV=1"
+    set "UV_CMD=uv"
 ) else (
-    set "USE_UV=0"
     "%PYTHON_CMD%" -m uv --version >nul 2>&1
     if not errorlevel 1 (
         set "USE_UV=1"
+        set "UV_CMD=%PYTHON_CMD% -m uv"
     ) else (
         echo [INFO] 尝试通过 pip 安装 uv ...
         "%PYTHON_CMD%" -m pip install --index-url "%PIP_INDEX%" uv >nul 2>&1
         if not errorlevel 1 (
             "%PYTHON_CMD%" -m uv --version >nul 2>&1
-            if not errorlevel 1 set "USE_UV=1"
+            if not errorlevel 1 (
+                set "USE_UV=1"
+                set "UV_CMD=%PYTHON_CMD% -m uv"
+            )
         )
     )
+)
+
+if exist "%VENV_PYTHON%" (
+    echo [INFO] 检测到已存在的虚拟环境，跳过创建。
+) else (
 
     if "!USE_UV!"=="1" (
         echo [INFO] 使用 uv 创建虚拟环境 ...
-        "%PYTHON_CMD%" -m uv venv --python "%PYTHON_CMD%" "%VENV_DIR%"
+        !UV_CMD! venv --python "%PYTHON_CMD%" "%VENV_DIR%"
         if errorlevel 1 (
             echo [WARN] uv 创建虚拟环境失败，回退到 venv。
             set "USE_UV=0"
@@ -102,7 +115,7 @@ if exist "%VENV_PYTHON%" (
             "%VENV_PYTHON%" -m ensurepip --upgrade >nul 2>&1
             if errorlevel 1 (
                 echo [WARN] ensurepip 失败，尝试使用 uv 安装 pip...
-                "%PYTHON_CMD%" -m uv pip install --python "%VENV_PYTHON%" pip >nul 2>&1
+                !UV_CMD! pip install --python "%VENV_PYTHON%" pip >nul 2>&1
             )
         )
     )
@@ -323,6 +336,10 @@ exit /b 1
 :: ==================== 创建 Web 服务代码（智能适配缺失模型） ====================
 echo [INFO] 创建 Web 服务代码 app.py ...
 
+:: 检测 cls 可选模型是否存在（缺失时生成的 app.py 传入 None，服务仍可启动）
+set "CLS_MODEL_PATH="
+if exist "%MODEL_DIR%\ch_ppocr_mobile_v2.0_cls_infer.onnx" set "CLS_MODEL_PATH=%MODEL_DIR%\ch_ppocr_mobile_v2.0_cls_infer.onnx"
+
 :: 生成 Web 服务代码（cls 模型已下载，直接引用有效路径）
 > "%APP_FILE%" echo import os
 >>"%APP_FILE%" echo import numpy as np
@@ -443,7 +460,12 @@ endlocal
 >>"%APP_FILE%" echo ocr_engine = RapidOCR(
 >>"%APP_FILE%" echo     det_model_path=os.path.join(MODEL_DIR, ^"ch_PP-OCRv3_det_infer.onnx^"),
 >>"%APP_FILE%" echo     rec_model_path=os.path.join(MODEL_DIR, ^"ch_PP-OCRv3_rec_infer.onnx^"),
+if defined CLS_MODEL_PATH goto cls_path_found
+>>"%APP_FILE%" echo     cls_model_path=None,
+goto cls_path_done
+:cls_path_found
 >>"%APP_FILE%" echo     cls_model_path=os.path.join(MODEL_DIR, ^"ch_ppocr_mobile_v2.0_cls_infer.onnx^"),
+:cls_path_done
 >>"%APP_FILE%" echo )
 >>"%APP_FILE%" echo.
 >>"%APP_FILE%" echo def convert_result(result):
@@ -478,11 +500,27 @@ endlocal
 
 :: ==================== 启动服务 ====================
 echo [INFO] 设置环境变量并启动 Web 服务 ...
+
+:: 检测 5000 端口是否已被占用
+netstat -ano | findstr ":5000" | findstr "LISTENING" >nul 2>&1
+if not errorlevel 1 (
+    echo [WARN] 端口 5000 已被占用！请先停止占用该端口的进程，否则服务可能无法访问。
+    echo [WARN] 可使用以下命令查看占用进程: netstat -ano ^| findstr :5000
+)
+
 set "GPU_AVAILABLE=%GPU_AVAILABLE%"
 echo [INFO] 服务地址: http://localhost:5000
 echo [INFO] API 文档: http://localhost:5000/docs
 echo [INFO] 按 Ctrl+C 停止服务。
-"%VENV_PYTHON%" "%APP_FILE%"
+
+cd /d "%BASE_DIR%"
+if "!USE_UV!"=="1" (
+    echo [INFO] 使用 uv run 启动服务 ...
+    !UV_CMD! run python "%APP_FILE%"
+) else (
+    echo [INFO] 使用 python 启动服务 ...
+    "%VENV_PYTHON%" "%APP_FILE%"
+)
 
 pause
 exit /b 0
@@ -497,10 +535,13 @@ if "%PROCESSOR_ARCHITECTURE%"=="AMD64" (
     set "PYTHON_INSTALLER=%TEMP%\python-3.8.10.exe"
 )
 echo [INFO] 下载 Python 安装包: !PYTHON_INSTALLER_URL!
-certutil -urlcache -split -f "!PYTHON_INSTALLER_URL!" "!PYTHON_INSTALLER!" >nul 2>&1
+powershell -NoProfile -Command "$ProgressPreference='SilentlyContinue'; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '%PYTHON_INSTALLER_URL%' -OutFile '%PYTHON_INSTALLER%' -TimeoutSec 1800" >nul 2>&1
 if errorlevel 1 (
-    echo [ERROR] Python 安装包下载失败！
-    exit /b 1
+    certutil -urlcache -split -f "!PYTHON_INSTALLER_URL!" "!PYTHON_INSTALLER!" >nul 2>&1
+    if errorlevel 1 (
+        echo [ERROR] Python 安装包下载失败！
+        exit /b 1
+    )
 )
 if not exist "!PYTHON_INSTALLER!" (
     echo [ERROR] Python 安装包不存在！

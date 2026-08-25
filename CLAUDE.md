@@ -49,6 +49,6 @@ OCR 流程：接收上传 → 写入临时文件 → `ocr_engine(tmp_path)` → 
 
 - **`Install_RapidOCR.bat` 是 GBK/ANSI 编码**，直接编辑会乱码。必须先转 UTF-8 副本编辑后再转回，禁止直接用编辑工具改原文件。
 - **无 `requirements.txt`**：依赖有两处锁定——开发调试用 `pyproject.toml`（uv 管理）；bat 硬编码 `pip install` 指定同一组版本（Python 3.8.10、onnxruntime 1.10.0、fastapi 0.100.0、numpy 1.21.6 等）。新增依赖需同时改 `pyproject.toml` 与 bat 中的安装命令。
-- 运行时环境统一为 **`.venv/`**：bat 与 uv 开发工作流都使用它（由 `pyproject.toml` + `uv.lock` 管理，已在 `.gitignore`，由 bat/uv 自动创建）。bat 内置 `USE_UV` 检测：有 uv 用 `uv run` 启动，无 uv（如 Win7）回退 venv+python，该逻辑不得改造成 uv-only。旧 `venv/` 已从 git 跟踪移除（历史遗留，bat 不再使用）。
+- 运行时环境统一为 **`.venv/`**：bat 与 uv 开发工作流都使用它（由 `pyproject.toml` + `uv.lock` 管理，已随仓库提交，Windows 专属）。bat 内置 `USE_UV` 检测：有 uv 用 `uv run` 启动，无 uv（如 Win7）回退 venv+python，该逻辑不得改造成 uv-only。旧 `venv/` 已从 git 跟踪移除（历史遗留，bat 不再使用）。
 - 端口 5000 硬编码在 `app.py:148`（`uvicorn.run`），README 与 bat 中的提示文字均与此一致。
 - bat 使用 `EnableDelayedExpansion`（`!var!` 语法）与子过程 `call :label`，echo 特殊字符需 `^` 转义。

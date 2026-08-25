@@ -23,7 +23,7 @@
 
 ## 功能特性
 
-- 📦 **一键部署**：双击 `Install_RapidOCR.bat` 自动完成 Python 检测、依赖安装、模型下载与服务启动（有 uv 用 `.venv`，否则用 venv+python）；OCR 模型（`models/`）已随仓库提供
+- 📦 **开箱即用**：双击 `Install_RapidOCR.bat` 即启动服务；运行时环境（`.venv/`）与 OCR 模型（`models/`）均已随仓库提供
 - 🖼️ **便捷识别**：Web 页面支持点击/拖拽上传图片，实时预览并绘制识别框
 - 📋 **结果分组**：同一行文本以 Tab 分隔、不同行换行，多行文本框可直接复制
 - 🌐 **多镜像容错**：模型自动从 hf-mirror / Hugging Face / ModelScope 多源下载
@@ -90,7 +90,7 @@ Install-RapidOCR-Windows/
 ├── Install_RapidOCR.bat     # 一键安装与启动脚本
 ├── pyproject.toml           # uv 依赖定义（开发调试用）
 ├── uv.lock                  # uv 依赖锁定文件
-├── .venv/                   # 运行时虚拟环境（bat/uv 自动创建，已 gitignore）
+├── .venv/                   # 运行时虚拟环境（已随仓库提供，Windows 专属）
 ├── models/                  # OCR 模型文件（已随仓库提供）
 ├── LICENSE                  # MIT 许可证
 └── README.md                # 项目说明

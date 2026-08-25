@@ -42,7 +42,7 @@
 ## 快速开始：一键安装脚本
 
 1. 双击运行 `Install_RapidOCR.bat`
-2. 脚本自动检测 Python、创建虚拟环境（有 uv 用 `.venv`，否则用 venv+python）、安装依赖并下载模型（已存在则跳过）
+2. 脚本自动检测 Python、创建虚拟环境、安装依赖并下载模型
 3. 服务启动后，浏览器访问 `http://localhost:5000`
 
 > 提示：脚本会检测 CUDA 环境，自动选择 `onnxruntime-gpu` 或 `onnxruntime`（CPU 版）。
